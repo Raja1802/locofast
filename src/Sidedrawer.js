@@ -46,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiDrawer-paper': {
         backgroundColor: "#0067E2"
     },
+    '& .MuiInputBase-input': {
+        padding: "10px 20px"
+    }
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -148,7 +151,7 @@ export default function MiniDrawer() {
                         </Tooltip>
                                 <Tooltip title="Notifications">
                         <NotificationsNoneIcon style={{color: "black", margin: "10px 10px 10px 10px"}}/>
-                                </Tooltip>Tooltip>
+                                </Tooltip>
                     </Grid>
                     <Divider orientation="vertical" flexItem />
                     <Grid container item xs={2} spacing={1}>            

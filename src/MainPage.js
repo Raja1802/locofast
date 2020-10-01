@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz';
-import CustomizedDialogs from "./Menu"
+import MainForm from "./MainForm"
 const Styles = {
     mainstylecss: {
         marginTop: "70px",
@@ -113,7 +113,7 @@ class MainPage extends React.Component {
                     <Grid item xs={9} style={Styles.ItemOuterGridCss}>
                         <Grid container item xs={12} spacing={1}>
                              { numrows.map((item, index) => {
-                                return  <CustomizedDialogs/>;})} 
+                                return  <MainForm/>;})} 
                         </Grid>
                     </Grid>
                </Grid>

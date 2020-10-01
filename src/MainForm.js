@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles  } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -8,12 +8,14 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import { useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import MultilineTextFields from "./StepForm"
 import Paper from '@material-ui/core/Paper';
-
+import { useForm } from "react-hooks-helper";
+import Factory from "./Factory";
+import Design from "./Design";
+import Qunatity from "./Quantity";
+import Review from "./Review"
 const Styles = {
      DialogCss: {
     },
@@ -115,6 +117,36 @@ const Styles = {
         color: "#676773",
     }
 }
+function getSteps() {
+  return [0,1,2,3];
+}
+
+function getStepContent(stepIndex, props) {
+  switch (stepIndex) {
+    case 0:
+      return <Factory {...props}/>;
+    case 1:
+      return <Design {...props}/>;
+    case 2:
+      return <Qunatity  {...props}/>;
+    case 3:
+      return <Review  {...props}/>;
+    default:
+      return 'Unknown stepIndex';
+  }
+}
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+}));
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -154,8 +186,29 @@ const DialogActions = withStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
+const defaultData = {
+  factor: "Jane",
+    desig: "ama",
+    quanti: "0",
+    file: null
+ 
+};
+export default function MainForm() {
+     const [formData, setForm] = useForm(defaultData);
+    const props = { formData, setForm};
+    const classes = useStyles();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const steps = getSteps();
 
-export default function CustomizedDialogs() {
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+ 
   const [open, setOpen] = React.useState(false);
    const [fullWidth, setFullWidth] = React.useState(true);
   const [maxWidth, setMaxWidth] = React.useState('md');
@@ -185,28 +238,40 @@ export default function CustomizedDialogs() {
           
         </DialogTitle> 
         <DialogContent style={Styles.DialogContentCss} dividers>
+            
             <Grid container spacing={1}>
                 <Grid container item xs={4} spacing={1}>
                     <img style={Styles.DialogImgCss} src="https://images.unsplash.com/photo-1518019671582-55004f1bc9ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&h=500&q=80" alt="img"/>
                 </Grid>
                 <Grid container item xs={8} spacing={1}>
                     <Grid item xs={12}> <h4 style={Styles.DialogSmallHeadingCss}> <ArrowBackIcon style={{color: "black", marginRight: "20px",marginTop: "5px", fontSize: "22px", lineHeight: "24px"}}/>Assign to factory</h4></Grid>
-                    <Grid item xs={12}  ><MultilineTextFields/></Grid>
-                    
+                    <Grid item xs={12} style={{height: "700px"}}>{getStepContent(activeStep, props)} </Grid>
                 </Grid>
             </Grid>
             
        
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            CANCEL
-          </Button>
-          <Button autoFocus onClick={handleClose} color="primary" style={{backgroundColor: "#0067E2", color: "white"}}>
-            ASSIGN TO FACTORY
-          </Button>
+        <DialogActions>       
+          <div>
+            <Typography className={classes.instructions}></Typography>
+            <div>
+              <Button
+                  style = {{border: "1px solid #d6d6d6"}}
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.backButton}
+              >
+                Back
+              </Button>
+              <Button color="primary" style={ activeStep === steps.length - 1 ? {backgroundColor: "#0067E2", color: "white"} : {backgroundColor: "grey", color: "black"}} onClick={activeStep === steps.length - 1 ? handleClose :handleNext}>
+                {activeStep === steps.length - 1 ? 'ASSIGN TO FACTORY' : 'Next'}
+              </Button>
+            </div>
+          </div>
         </DialogActions>
+          
       </Dialog>
+      
     </>
   );
 }
