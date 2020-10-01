@@ -1,7 +1,9 @@
 ## Assignment LocoFast
 Contains design for the assignment provided in
 https://www.figma.com/file/OLn6vu27iFiM4nhE0ZuevF/Assignment
-
+## How it works
+Click on any item you want to edit, A modal will open
+then you can use the model to assign a factory, design, quanity and challen for the product.
 ## Used Css themes
 Material-Ui for Theme and Styling
 Done Inline styling to Decrease latency
